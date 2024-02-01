@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Repülőtársaság</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel='stylesheet' href='style.css' content="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<header>
+    <nav>
+        <div class="navbar">
+            <a href="/index">Kezdőlap</a>
+            <a href="/jarat_kereso">Járat Kereső</a>
+            <a href="/akciok">Akciók</a>
+            <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+            <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+            <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+            <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+            <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+            <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+            <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+            <div class="animation start-rolunk"></div>
+            <span></span>
+
+        </div>
+    </nav>
+</header>
+<body style="background-image: url('/images/rolunk-hatter.png');" class="rolunk">
+<h2>Gyors kereső:</h2>
+<a href="#baleset" class="a_link rolunk_link">Balesetek száma</a><br>
+<br><br>
+<div class="rolunk-main">
+<h2 id="varosok">Repült útvonalak</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Város</th>
+        <th>Név</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--span th:each="task,iter : ${foo.tasks}"-->
+    <tr th:each="repter: ${repterek}">
+        <td th:text="${repter.getVaros()}"></td>
+        <td th:text="${repter.getNev()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
+    <div class="search-form">
+        <h2 id="baleset">Balesetek száma:<br> <span id="counter" class="counter" style="text-align:center; display: inline-block; height: 15px; font-size: 15px; overflow-y: hidden">0</span></h2>
+    </div><h2 id="repulo">Repülőgépeink</h2>
+    <a href="/repcsik" class="a_link rolunk_link">Repülőgépeink száma</a>
+    <br><br>
+</div>
+<script>
+    // JavaScript kód a számláló létrehozásához és növeléséhez
+    var counterElement = document.getElementById("counter");
+    var count = 69;
+
+    function updateCounter() {
+        counterElement.innerText = count;
+        count++;
+    }
+
+    // Az oldal betöltésekor hívjuk meg az updateCounter függvényt
+    window.onload = function() {
+        updateCounter();
+
+        // Időzítő létrehozása a számláló folyamatos növeléséhez
+        setInterval(updateCounter, 10000); // 1000 ms = 1 másodperc
+    };
+</script>
+</body>
+</html>
+

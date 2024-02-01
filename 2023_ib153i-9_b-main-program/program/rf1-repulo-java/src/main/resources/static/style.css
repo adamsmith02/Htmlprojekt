@@ -1,0 +1,466 @@
+/*Navigációs menü panel*/
+body{
+    margin-top: 3px;
+    font-family: 'Poppins', sans-serif;
+
+}
+.navbar{
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    background: #34495e;
+    border-radius: 8px;
+    font-size: 0;
+}
+.search-area {
+    margin-top: 50px;
+    padding: 20px; /* Spacing around the search area */
+    border-radius: 5px; /* Rounded corners */
+}
+.navbar a{
+    font-size: 15px;
+    color: white;
+    text-decoration: none;
+    line-height: 50px;
+    position: absolute;
+    z-index: 1;
+    display: inline-block;
+    text-align: center;
+}
+.navbar .animation{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+    background: linear-gradient(45deg, #194f4d, #10dffa);
+    width: 160px;
+    border-radius: 10px;
+    transition: all .5s ease 0s;
+}
+.navbar a:nth-child(1){
+    width: 160px;
+}
+.navbar .start-home, a:nth-child(1):hover~.animation{
+    width: 160px;
+    left: 0;
+}
+.navbar a:nth-child(2){
+    width: 130px;
+    left: 160px;
+}
+.navbar .start-jaratKereso, a:nth-child(2):hover~.animation{
+    width: 130px;
+    left: 160px;
+}
+.navbar a:nth-child(3){
+    left: 290px;
+    width: 100px;
+}
+.navbar .start-akciok, a:nth-child(3):hover~.animation{
+    width: 100px;
+    left: 290px;
+}
+.navbar a:nth-child(4){
+    left: 390px;
+    width: 130px;
+}
+.navbar .start-aranykartya, a:nth-child(4):hover~.animation{
+    left: 390px;
+    width: 130px;
+}
+.navbar a:nth-child(5){
+    left: 520px;
+    width: 90px;
+}
+.navbar .start-rolunk, a:nth-child(5):hover~.animation{
+    left: 520px;
+    width: 90px;
+}
+.navbar a:nth-child(6){
+    left: 610px;
+    width: 170px;
+}
+.navbar .start-jaratokKezelese, a:nth-child(6):hover~.animation{
+    left: 610px;
+    width: 170px;
+}
+.navbar a:nth-child(7){
+    left: 780px;
+    width: 160px;
+}
+.navbar .start-gepekKezelese, a:nth-child(7):hover~.animation{
+    left: 780px;
+    width: 160px;
+}
+.navbar a:nth-child(8){
+    left: 940px;
+    width: 170px;
+}
+.navbar .start-repterekKezelese, a:nth-child(8):hover~.animation{
+    left: 940px;
+    width: 170px;
+}
+.navbar a:nth-child(9){
+    left: 1110px;
+    width: 140px;
+}
+.navbar .start-rendelesek, a:nth-child(9):hover~.animation{
+    left: 1110px;
+    width: 140px;
+}
+
+.navbar .start-fiokom, a:nth-child(10):hover~.animation{
+    left: 1250px;
+    width: 150px;
+}
+.navbar a:nth-child(10){
+    left: 1250px;
+    width: 150px;
+}
+
+.navbar a:nth-child(11){
+    left: 1400px;
+    width: 150px;
+}
+.navbar .start-kilepes, a:nth-child(11):hover~.animation{
+    left: 1400px;
+    width: 150px;
+}
+
+/*oldalak designelése*/
+.homePage{
+    background-image: url('images/repulo.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+}
+.jaratKereso{
+    background-image: url('images/jaratKereso.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+    color: white;
+}
+
+.rolunk{
+    color:white;
+    background-image: url('images/rolunk-hatter.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+    margin-top: 100px;
+}
+.rolunk_link{
+    background: linear-gradient(45deg, #194f4d, #10dffa);
+}
+.rolunk_link:hover{
+    background: linear-gradient(45deg,#10dffa , #194f4d);
+}
+/* A tartalom középre igazítása */
+.rolunk-main {
+    text-align: center;
+}
+.fiokom{
+    background-image: url('images/fiokom-hatter.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+    color: white;
+}
+.register{
+    background-image: url('images/register.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+}
+.login{
+    background-image: url('images/login.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+}
+
+
+
+ html {
+     font-size: 14px;
+}
+ @media (min-width: 768px) {
+     html {
+         font-size: 16px;
+    }
+}
+ .border-top {
+     border-top: 1px solid #e5e5e5;
+}
+ .border-bottom {
+     border-bottom: 1px solid #e5e5e5;
+}
+ .box-shadow {
+     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+ button.accept-policy {
+     font-size: 1rem;
+     line-height: inherit;
+}
+
+
+
+.footer {
+    color: white; /* White text for footer */
+    padding: 10px 0; /* Spacing for footer */
+    text-align: center; /* Center align footer content */
+}
+
+ table, th, td {
+     border: 1px solid black;
+     padding: 1px;
+}
+.search-area {
+
+    padding: 20px; /* Spacing around the search area */
+    border-radius: 5px; /* Rounded corners */
+    color: white; /* White text */
+    text-align: center; /* Center the text */
+}
+
+.container {
+    max-width: 1200px; /* Maximum width of the content */
+    margin: 0 auto; /* Center the container */
+}
+
+.search-form {
+    display: flex;
+    justify-content: center; /* Align form items in the center */
+    flex-wrap: wrap; /* Allow items to wrap as needed */
+    gap: 10px; /* Space between form items */
+}
+
+.search-form .form-control, .search-form .btn-primary {
+    flex-grow: 1;
+    margin: 5px; /* Margin around the inputs and button */
+    padding: 10px 15px; /* Padding inside the inputs and button */
+    border: none;
+    border-radius: 5px; /* Rounded corners for the inputs and button */
+}
+
+.search-form .btn-primary {
+    color: white; /* White text for the button */
+    cursor: pointer; /* Cursor changes to pointer when hovering over the button */
+    white-space: nowrap; /* Prevent text wrapping inside the button */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column; /* Stack form items on smaller screens */
+    }
+
+    .search-form .form-control, .search-form .btn-primary {
+        flex-grow: 0;
+        max-width: none;
+    }
+}
+/* Add this to define the background properties for both the navbar and search area */
+
+
+
+/* Apply the background-image class to the search area */
+.search-area {
+    padding: 20px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+/* Additional styles for the search form inside the search-area */
+.search-form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5); /* Optional: add a dark overlay */
+    padding: 20px;
+    border-radius: 5px;
+}
+
+/* Styles for input fields and button inside the form */
+.search-form .form-control, .search-form .btn-primary {
+    flex-grow: 1;
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.search-form .btn-primary {
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.content-container {
+    color:white;
+    display: flex;
+    margin-right: 100px;
+}
+
+.content {
+    flex: 1;
+}
+
+.content:first-child {
+    margin-right: 20px;
+    margin-left: 50px;
+}
+.a_link {
+    display: inline-block; /* Allows setting padding and width */
+    padding: 10px 20px; /* Adjust size of the button */
+    margin-bottom: 3px;
+    background-color: #007bff; /* Background color */
+    color: white; /* Text color */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from link */
+    border-radius: 5px; /* Rounded corners for the button */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+     /* Adjust as per your layout */
+}
+
+.a_link:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    text-decoration: none; /* Remove underline on hover */
+    color: white; /* Keep text color on hover */
+}
+.inline{
+    display: inline-block;
+}
+
+.arany_body {
+    background-image: url("images/akciohatter.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #E5E4E2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-size: cover;
+}
+
+.gold-button {
+    background: linear-gradient(25deg, #194f4d, #10dffa);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #0A0A23;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.gold-button:hover {
+    background: linear-gradient(87deg, #10dffa, #194f4d);
+}
+
+.royal-card-container {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    background: rgba(26, 26, 72, 0.8);
+    border: 1px solid gold;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 95%;
+}
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+.card-image {
+    width: 40%; /* Vagy bármilyen más méret, amely megfelelő */
+    border-radius: 15px; /* Lekerekített szélek */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* További meglévő CSS stílusok... */
+
+.card-content {
+    width: 58%; /* Biztosítja, hogy legyen tér a kép és a tartalom között */
+    padding-left: 2%; /* Kis térköz a kép és a szöveg között */
+}
+.main {
+    background: rgba(0, 0, 0, 0.5); /* Sötét, áttetsző háttér */
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* Fiók törlése szekció jobbra igazítása */
+.my-account-section-delete {
+    text-align: right;
+}
+
+/* Táblázatok modern stílusa */
+table {
+    background: rgba(0, 0, 0, 0.75); /* Sötét, áttetsző háttér */
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%; /* Teljes szélesség */
+    border-collapse: collapse; /* A táblázat cellái közötti tér eltüntetése */
+    margin: 20px 20px 20px; /* Margin a táblázat körül */
+
+}
+
+table th,
+table td {
+    border: 1px solid #ddd; /* Szegély a cellák körül */
+    padding: 8px; /* Padding a cellákban */
+    text-align: center; /* Szöveg középre igazítása */
+}
+
+table th {
+    background-color: #f2f2f2; /* Háttérszín a fejléceknek */
+    color: black; /* Szövegszín */
+}
+
+/* Táblázat sorainak stílusa hover esetén */
+table tr:hover {
+    background: #34495e;
+}
+header{
+    position: fixed;
+    top: 0;
+    width: 100%
+}
+.royal-main-content{
+    margin-top: 100px;
+}
+/* További meglévő CSS stílusok... */
+.akciok{
+    margin-top: 150px;
+}
+/* A keresési terület stílusa */
+.belepgomb{background-color: lawngreen;}
+
+.error_body{
+    background-image: url("images/error_page.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.rendeles{
+    color: white;
+    background-image: url("images/jegyek.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 100px 50px 50px;
+}
+

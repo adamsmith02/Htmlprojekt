@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:sec="http://java.sun.com/JSP/Page">
+<head>
+  <title>Repülőtársaság - Arany Kártya</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='style.css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body  class="arany_body">
+<header>
+  <nav>
+    <div class="navbar">
+      <a href="/index">Kezdőlap</a>
+      <a href="/jarat_kereso">Járat Kereső</a>
+      <a href="/akciok">Akciók</a>
+      <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+      <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+      <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+      <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+      <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+      <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+      <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+      <!--            <a href="#">Kezdőlap</a>-->
+      <!--            <a href="#">Járat kereső</a>-->
+      <!--            <a href="#">Akciók</a>-->
+      <!--            <a href="#">Aranykártya</a>-->
+      <!--            <a href="#">Rólunk</a>-->
+      <!--            <a href="#">Járatok kezelése</a>-->
+      <!--            <a href="#">Gépek kezelése</a>-->
+      <!--            <a href="#">Repterek kezelése</a>-->
+      <!--            <a href="#">Rendelések</a>-->
+      <!--            <a href="#">Kilépés</a>-->
+      <div class="animation start-akciok"></div>
+      <span></span>
+
+    </div>
+  </nav>
+</header>
+<div style="padding-left: 100px; padding-right: 100px;">
+<table  style="margin-top: 100px; width: 100%;">
+  <thead>
+  <tr>
+    <th>Akció</th>
+    <th>Ár</th>
+    <th>Indulás</th>
+    <th>Érkezés</th>
+    <th>Indulás időpontja</th>
+    <th>Út hossz</th>
+    <th>Jegyvásárlás</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="entry : ${jaratLista}" th:if="${entry.key.getAkcio()} > 0">
+<!--    <td th:text="${entry.key.getId()}"></td>-->
+    <td th:text="${entry.key.getAkcio()} + '%-os akció '"></td>
+<!--    <td th:text="${entry.key.getUt_id()}"></td>-->
+<!--    <td th:text="${entry.key.getRepulo_lajstromjel()}"></td>-->
+    <td th:text="${entry.value.getAr()} + 'Ft helyett: ' + ${entry.value.getAr()}*${entry.key.getAkcio()}/100 + 'Ft '"></td>
+    <td th:text="${entry.value.getRepterVaros()}" th:if="${entry.value.isMegy()}"></td>
+    <td th:text="Budapest" th:if="${!entry.value.isMegy()}"></td>
+    <td th:text="Budapest" th:if="${entry.value.isMegy()}"></td>
+    <td th:text="${entry.value.getRepterVaros()}" th:if="${!entry.value.isMegy()}"></td>
+    <td th:text="${#temporals.format(entry.key.getIdopont(), 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${entry.value.getHossz()} + ' perc utazás '"></td>
+
+    <td sec:authorize="!hasAuthority('ROLE_ADMIN') && isAuthenticated()">
+      <a th:href="@{/vasarlas/{id}(id=${entry.key.getId()})}" class="btn btn-success">Vásárlás</a>
+    </td>
+    <td sec:authorize="!isAuthenticated()"><a  href="/login" class="btn btn-warning">Belépés</a></td>
+  </tr>
+  </tbody>
+
+</table>
+</div>
+<ul>
+  <!--Ide kell egy while ciklus ami leszedi az adatbázisból a akciokból ieeltve megkelene oldani hogy grid-vel vagy felxxel automatikusan elrendeze-->
+  <!--<li th:each="element : ${akciosak}" th:text="${element}"></li>
+
+  <li id="1">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>
+  <li id="2">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>
+  <li id="3">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>
+  <li id="4">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>
+  <li id="5">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>
+  <li id="6">
+    <div class="akcio"><img src="logo.png" alt="akcio" width="200px" height="300px"><p>Eredeti ár: számFt<sup style="color: red">-szám%</sup></p><p style="color: red">Akciós ár: számFt</p></div>
+    <a href="/jarat_kereso">Megnéz</a><br><br>
+  </li>-->
+</ul>
+</body>
+</html>

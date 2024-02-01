@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+   <head>
+      <title>Spring Boot example</title>
+      <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel='stylesheet' href='../static/style.css'>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+   </head>
+   <header>
+      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+         <div class="container">
+            <div class="navbar-collapse collapse">
+               <img src="/images/repuloLogo.png" alt="repulo logo" width="100px" height="100px">
+               <ul class="navbar-nav">
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" href="/index">Kezdőlap</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" href="/jarat_kereso">Járat Kereső</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link text-dark" href="/akciok">Akciók</a>
+                  </li>
+                  <li sec:authorize="isAuthenticated()" class="nav-item">
+                     <a class="nav-link text-dark" href="/arany_kartya">Aranykártya</a>
+                  </li>
+                  <li>
+                     <a class="nav-link text-dark" href="/rolunk">Rólunk</a>
+                  </li>
+                  <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                     <a class="nav-link text-dark" href="/jaratok_kezelese">Járatok Kezelése</a>
+                  </li>
+                  <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                     <a class="nav-link text-dark" href="/gepek_kezelese">Gépek Kezelése</a>
+                  </li>
+                  <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                     <a class="nav-link text-dark" href="/repterek_kezelese">Repterek Kezelése</a>
+                  </li>
+                  <li sec:authorize="isAuthenticated()" class="nav-item">
+                     <a class="nav-link text-dark" href="/rendeles">Rendelések</a>
+                  </li>
+                  <li class="nav-item" sec:authorize="!isAuthenticated()">
+                     <a class="nav-link text-dark" href="/register">Regisztráció<img src="/images/regisztracio.png" alt=" logo" width="60px" height="60px"></a>
+                  </li>
+                  <li class="nav-item" sec:authorize="!isAuthenticated()">
+                     <a class="nav-link text-dark" href="/login">Belépés<img src="/images/belepes.png" alt=" logo" width="50px" height="50px"></a>
+                  </li>
+                  <li sec:authorize="isAuthenticated()" class="nav-item">
+                     <a class="nav-link text-dark" href="/logout">Kilépés<img src="/images/kijelentkezes.png" alt=" logo" width="50px" height="50px"></a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+   </header>
+   <body>
+      <div>
+         <h2>Dogs</h2>
+         <table>
+            <thead>
+               <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Owner</th>
+               </tr>
+            </thead>
+            <tbody>
+               <!--span th:each="task,iter : ${foo.tasks}"-->
+               <tr th:each="repter,iter : ${dogs}">
+                  <td th:text="${repter.id}"></td>
+                  <td th:text="${repter.name}"></td>
+                  <td th:text="${repter.age}"></td>
+                  <td th:text="${user_mails[iter.index]}"></td>
+                  <td th:if="${user_mails[iter.index]} == ${current_user.email} or ${current_user.role} == 'ROLE_ADMIN'"><a th:href="@{/edit/{id}(id=${repter.id})}">Update</a></td>
+                  <td sec:authorize="hasAuthority('ROLE_ADMIN')"><button data-toggle="modal" data-target="#modal-toTrash"
+                     th:attr="data-target='#modal-toTrash'+${repter.id}" class="btn-sm btn-dark details">Delete
+                     <span class="glyphicon glyphicon-trash" data-toggle="tooltip"
+                        data-placement="top" title="Sent to Trash Box"></span></button>
+                  </td>
+                  <div class="modal modal-toTrash" th:id="modal-toTrash+${repter.id}">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal"
+                                 aria-hidden="true">×
+                              </button>
+                           </div>
+                           <div class="modal-body">
+                              <p class="error-text"><strong>Confirmation</strong></p>
+                           </div>
+                           <div class="modal-footer">
+                              <button class="btn-sm btn-dark details" data-dismiss="modal" aria-hidden="true">
+                              Cancel
+                              </button>
+                              <!--a th:href="@{/delete/{id}(id=${repter.id})}"-->
+                              <form th:action="@{/delete/{id}(id=${repter.id})}" method="post">
+                                 <button class="btn-sm btn-dark details" type="submit" value="delete">Yes</button></a>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div sec:authorize="isAuthenticated()">
+         <h2>Add A Dog</h2>
+         <form th:action="@{/add}" method="post">
+            <label>Name:
+            <input type="text" name="name" id="name"></input>
+            </label>
+            <label>Age:
+            <input type="text" name="age" id="age"></input>
+            </label>
+            <input type="submit" value="Submit" class="btn-sm btn-dark details"></input>
+         </form>
+      </div>
+      <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+         This content is only shown to administrators.
+      </div>
+      <div sec:authorize="hasAuthority('ROLE_USER')">
+         This content is only shown to users.
+      </div>
+      <div sec:authorize="isAuthenticated()">     
+         This content is only shown to authenticated users.</br>
+         Logged in user: <span sec:authentication="name"></span> |
+         Roles: <span sec:authentication="principal.authorities"></span>            
+      </div>
+   </body>
+</html>

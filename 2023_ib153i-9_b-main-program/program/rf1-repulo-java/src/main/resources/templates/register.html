@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+   <title>Repülőtársaság</title>
+   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel='stylesheet' href='style.css' content="text/css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+</head>
+
+<body class="register">
+
+<header>
+   <nav>
+      <div class="navbar">
+         <a href="/index">Kezdőlap</a>
+         <a href="/jarat_kereso">Járat Kereső</a>
+         <a href="/akciok">Akciók</a>
+         <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+         <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+         <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+         <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+         <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+         <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+         <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+         <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+         <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+         <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+         <div class="animation start-rolunk"></div>
+         <span></span>
+
+      </div>
+   </nav>
+</header>
+<div th:if="${passwordError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+   <p th:text="${passwordError}" style="text-align: center;"></p>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+   </button>
+</div>
+<div th:if="${usernameError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+   <p th:text="${usernameError}" style="text-align: center;"></p>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+   </button>
+</div>
+<div th:if="${phoneNumberError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+   <p th:text="${phoneNumberError}" style="text-align: center;"></p>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+   </button>
+</div>
+<div th:if="${bankartyaError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+   <p th:text="${bankartyaError}" style="text-align: center;"></p>
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+   </button>
+</div>
+
+      <div class="search-area">
+         <h2>Regisztráció</h2>
+         <form action="#" th:action="@{/registeruser}" method="post" class="search-form">
+            <input type="text" id="username" name="felhasznalonev" class="form-control" placeholder="Felhasználónév"  required>
+            <input type="password" id="password" name="jelszo" class="form-control" placeholder="Jelszó" minlength="8" required>
+            <input type="password" id="password-repeat" name="password-repeat" class="form-control" placeholder="Jelszó ismét" minlength="8" required>
+            <input type="text" id="vezetek" name="vezetekNev" class="form-control" placeholder="Vezeteknév" required>
+            <input type="text" id="kereszt" name="KeresztNev" class="form-control" placeholder="Keresztnév" required>
+            <input type="number" id="phone" name="telefonSzam" class="form-control" placeholder="Telefonszám min. 11 szám"   required>
+            <input type="email" id="email" name="email" class="form-control" placeholder="E-mail cím" required>
+            <input type="number" id="cardnumber" name="bankkartyaszam" pattern="\d*" class="form-control" placeholder="Bankkártyaszám min. 16 szám"  required>
+            <input type="submit" value="Regisztráció" name="regiszt" class="btn btn-primary">
+         </form>
+
+      </div>
+
+
+<script>
+   window.onload = function() {
+      $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+         $(this).slideUp(500);
+      });
+   }
+</script>
+</body>
+</html>
+   

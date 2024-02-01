@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Repülőtársaság</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel='stylesheet' href='../static/style.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repterek Kezelése</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .header {
+            padding: 10px 0;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+        }
+        .header a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .header a:hover {
+            text-decoration: underline;
+        }
+        .list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .add-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .add-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <div class="navbar-collapse collapse">
+                <img src="/images/repuloLogo.png" alt="repulo logo" width="100px" height="100px">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/index">Kezdőlap</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/jarat_kereso">Járat Kereső</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/akciok">Akciók</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link text-dark" href="/arany_kartya">Aranykártya</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" href="/rolunk">Rólunk</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link text-dark" href="/jaratok_kezelese">Járatok Kezelése</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link text-dark" href="/gepek_kezelese">Gépek Kezelése</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                        <a style="color: #333333; font-weight: bold; text-decoration: underline" class="nav-link text-dark" href="/repterek_kezelese">Repterek Kezelése</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link text-dark" href="/rendeles">Rendelések</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link text-dark" href="/register">Regisztráció<img src="/images/regisztracio.png" alt=" logo" width="60px" height="60px"></a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link text-dark" href="/login">Belépés<img src="/images/belepes.png" alt=" logo" width="50px" height="50px"></a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link text-dark" href="/logout">Kilépés<img src="/images/kijelentkezes.png" alt=" logo" width="50px" height="50px"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<body>
+<div class="container">
+    <div class="header d-flex justify-content-between">
+        <div>
+            <a href="/">Kezdőlap</a>
+            <a href="/jaratkereso">Járat kereső</a>
+            <a href="/akciok">Akciók</a>
+            <a href="/rolunk">Rólunk</a>
+        </div>
+        <div>
+            <a href="/admin">Admin</a>
+        </div>
+    </div>
+
+    <h2>Járatok Kezelése</h2>
+
+    <!-- Itt jön a meglévő repterek listája -->
+    <div th:each="repter, stat : ${repterek}" class="list-item">
+        <input type="text" th:value="${repter.varos}" placeholder="Város" />
+        <input type="text" th:value="${repter.nev}" placeholder="reptér neve" />
+        <button class="btn btn-primary">Módosít</button>
+        <button class="btn delete-btn">Töröl</button>
+    </div>
+
+
+    <div class="list-item">
+        <form action="/createRepter" method="post">
+        <input type="text" placeholder="Város" required/>
+        <input type="text" placeholder="reptér neve" required/>
+        <input type="button" value="Hozzáadd">
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

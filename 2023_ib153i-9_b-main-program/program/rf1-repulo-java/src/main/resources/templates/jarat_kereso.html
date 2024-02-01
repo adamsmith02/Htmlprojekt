@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Repülőtársaság</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel='stylesheet' href='style.css' content="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body class="jaratKereso">
+
+<header>
+  <nav>
+    <div class="navbar">
+      <a href="/index">Kezdőlap</a>
+      <a href="/jarat_kereso">Járat Kereső</a>
+      <a href="/akciok">Akciók</a>
+      <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+      <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+      <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+      <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+      <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+      <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+      <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+      <div class="animation start-jaratKereso"></div>
+      <span></span>
+
+    </div>
+  </nav>
+</header>
+<div class="search-area" style="margin-top: 95px;">
+  <div class="container">
+    <h1 class="search-form">Foglalja le járatát még ma</h1>
+    <form class="search-form" th:action="@{/jaratKereses}" method="post">
+      <select class="form-control" name="repterek" id="repterek">
+        <option value="">Válassz repülőteret...</option>
+        <option  th:each="repter : ${repterek3}" th:value="${repter.getVaros()}" th:text="${repter.getNev()} +': ' + ${repter.getVaros()}"></option>
+      </select>
+      <select class="form-control" name="allapot">
+        <option value="jon">Jön</option>
+        <option value="megy">Megy</option>
+      </select>
+
+      <input type="submit" class="btn btn-primary" value="Keresés"></input>
+    </form>
+  </div>
+</div>
+<!--<h1>Máv, Volán országbérlettel ígénybe vehetőek a járatiaink!</h1>-->
+<table style="margin-top:100px; ">
+  <thead th:if="${jaratKeresesKiiras != null and not #lists.isEmpty(jaratKeresesKiiras)}">
+  <tr>
+    <th>Ár</th>
+    <th>Indulás</th>
+    <th>Érkezés</th>
+    <th>Indulás időpontja</th>
+    <th>út hossza</th>
+
+    <th sec:authorize="!hasAuthority('ROLE_ADMIN') && isAuthenticated()">Jegyvásárlás</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="entry : ${jaratKeresesKiiras}">
+
+    <td th:text="${entry.value.getAr()}*${entry.key.getAkcio()}/100 + 'Ft '" th:if="${entry.key.getAkcio()} > 0"> </td>
+    <td th:text="${entry.value.getAr()}+ 'Ft '" th:if="${entry.key.getAkcio()} == 0"> </td>
+    <td th:text="${entry.value.getRepterVaros()}" th:if="${entry.value.isMegy()}"></td>
+    <td th:text="Budapest" th:if="${!entry.value.isMegy()}"></td>
+    <td th:text="Budapest" th:if="${entry.value.isMegy()}"></td>
+    <td th:text="${entry.value.getRepterVaros()}" th:if="${!entry.value.isMegy()}"></td>
+    <td th:text="${#temporals.format(entry.key.getIdopont(), 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${entry.value.getHossz()} + ' perc utazás '"></td>
+    <td sec:authorize="!hasAuthority('ROLE_ADMIN') && isAuthenticated()">
+      <a th:href="@{/vasarlas/{id}(id=${entry.key.getId()})}" class="btn btn-success">Vásárlás</a>
+    </td>
+    <td sec:authorize="!isAuthenticated()"><a  href="/login" class="btn btn-warning">Belépés</a></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

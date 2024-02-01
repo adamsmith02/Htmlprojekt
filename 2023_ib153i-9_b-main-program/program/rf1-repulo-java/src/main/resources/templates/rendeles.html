@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:sec="http://java.sun.com/JSP/Page">
+<head>
+  <title>Repülőtársaság - Rendeléseim</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='style.css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body sec:authorize="isAuthenticated()" class="rendeles"  >
+<header>
+  <nav>
+    <div class="navbar">
+      <a href="/index">Kezdőlap</a>
+      <a href="/jarat_kereso">Járat Kereső</a>
+      <a href="/akciok">Akciók</a>
+      <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+      <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+      <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+      <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+      <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+      <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+      <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+      <div sec:authorize="!hasAuthority('ROLE_ADMIN')" class="animation start-jaratokKezelese"></div>
+      <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="animation start-rolunk"></div>
+      <span></span>
+
+    </div>
+  </nav>
+</header>
+
+<div class="content-container inline search-form" style="width: 95%;" >
+  <h3>Jegyeim:</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Teljes név</th>
+      <th>Indulás</th>
+      <th>Érkezés</th>
+      <th>Indulás időpontja</th>
+      <th>Hely</th>
+      <th>Plusz Csomag</th>
+      <th>Töröl</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="jegy : ${jegyek}">
+      <td th:text="${jegy['nev']}"></td>
+      <td th:text="${jegy['megy'] ? 'Budapest' : jegy['repter_varos']}"></td>
+      <td th:text="${jegy['megy'] ? jegy['repter_varos'] : 'Budapest'}"></td>
+      <td th:text="${#dates.format(jegy['idopont'], 'yyyy-MM-dd HH:mm')}"></td>
+      <td th:text="${jegy['hely']}"></td>
+      <td th:text="${jegy['pluszcsomag'] ? 'Igen' : 'Nem'}"></td>
+      <td>
+        <form action="#" method="post" th:action="@{/deleteJegy}">
+          <input th:name="id" th:value="${jegy['id']}" type="hidden"/>
+          <input class="btn btn-danger" name="delete" type="submit" value="Törlés"/>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+</body>
+</html>

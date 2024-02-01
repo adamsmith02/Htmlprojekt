@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:sec="http://java.sun.com/JSP/Page">
+<head>
+    <title>Repülőtársaság - Arany Kártya</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='style.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body sec:authorize="isAuthenticated()" class="arany_body">
+<header>
+    <nav>
+        <div class="navbar">
+            <a href="/index">Kezdőlap</a>
+            <a href="/jarat_kereso">Járat Kereső</a>
+            <a href="/akciok">Akciók</a>
+            <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+            <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+            <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+            <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+            <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+            <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+            <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+            <!--            <a href="#">Kezdőlap</a>-->
+            <!--            <a href="#">Járat kereső</a>-->
+            <!--            <a href="#">Akciók</a>-->
+            <!--            <a href="#">Aranykártya</a>-->
+            <!--            <a href="#">Rólunk</a>-->
+            <!--            <a href="#">Járatok kezelése</a>-->
+            <!--            <a href="#">Gépek kezelése</a>-->
+            <!--            <a href="#">Repterek kezelése</a>-->
+            <!--            <a href="#">Rendelések</a>-->
+            <!--            <a href="#">Kilépés</a>-->
+            <div class="animation start-aranykartya"></div>
+            <span></span>
+
+        </div>
+    </nav>
+</header>
+
+
+<video loop muted playsinline autoplay  id="myVideo">
+    <source src="/images/moneyRain.mp4" type="video/mp4">
+</video>
+
+
+
+<main class="royal-main-content" style="">
+    <section class="royal-card-container">
+        <img src="/images/kartya.png" alt="arany kartya" class="card-image">
+        <div class="card-content">
+            <h1>Aranykártya</h1>
+            <p th:if="${user.aranykartya}">Már van arany kártyád!</p>
+            <div th:unless="${user.aranykartya}" class="card-section">
+                <p style="letter-spacing: 2px;"> Utazzon okosabban, és tegye a repülést még kényelmesebbé az Aranykártyánkkal, amely exkluzív előnyöket
+                    és megtakarításokat kínál az igényes utazó számára. Az Aranykártya tulajdonosaként nemcsak, hogy kedvezőbb
+                    árakon vásárolhat repülőjegyeket, hanem soron kívüli beszállást,
+                    és hozzáférést biztosítunk a VIP várótermekhez világszerte.</p>
+
+                <p>Ár: 5000 Ft</p>
+                <form method="post" action="#" th:action="@{/arany_kartya_vasarlas}">
+                    <input type="submit" value="Vétel" class="gold-button">
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
+
+

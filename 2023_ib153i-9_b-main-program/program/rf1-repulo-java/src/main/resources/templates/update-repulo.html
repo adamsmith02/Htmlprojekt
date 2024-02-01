@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Repülőtársaság</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel='stylesheet' href='/style.css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<header>
+  <nav>
+    <div class="navbar">
+      <a href="/index">Kezdőlap</a>
+      <a href="/jarat_kereso">Járat Kereső</a>
+      <a href="/akciok">Akciók</a>
+      <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+      <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+      <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+      <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+      <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+      <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+      <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+
+      <div class="animation start-gepekKezelese"></div>
+      <span></span>
+
+    </div>
+  </nav>
+</header>
+<body style="background-color: #194f4d;">
+<div class="search-area">
+  <div class="search-form">
+  <h2>Repülő szerkesztés</h2>
+  <form action="#" th:action="@{/updateGep/{id}(id=${repulo.lajstromjel})}" method="post">
+    <label>Becenév:
+      <input type="text" name="becenev" id="becenev" th:value="${repulo.becenev}">
+    </label>
+    <label>Modell:
+      <input type="text" name="modell" id="modell" th:value="${repulo.modell}">
+    </label>
+    <label>Ülőhely:
+      <input type="number" name="ulohely" id="ulohely" th:value="${repulo.ulohely}">
+    </label>
+    <label>Raktér:
+      <input type="number" name="rakter" id="rakter" th:value="${repulo.rakter}">
+    </label>
+    <label>Info:
+      <input type="text" name="info" id="info" th:value="${repulo.info}">
+    </label>
+    <label>Repült utak:
+      <input type="text" name="repultU" id="repultU" th:value="${repulo.repultUtakSzama}">
+    </label>
+    <input type="submit" value="Módosít" class="btn btn-warning">
+  </form>
+    <div th:if="${errorMessageRepuloup}" class="alert alert-danger">
+      <p th:each="error : ${errorMessageRepuloup}" th:text="${error}"></p>
+    </div>
+    <div th:if="${successMessageRepuloup}" class="alert alert-success">
+      <p th:text="${successMessageRepuloup}"></p>
+    </div>
+</div>
+</div>
+</body>
+</html>

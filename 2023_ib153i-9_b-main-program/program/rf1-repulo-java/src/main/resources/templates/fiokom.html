@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Repülőtársaság - Fiókom</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel='stylesheet' href='style.css' content="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body class="fiokom">
+<header>
+    <nav>
+        <div class="navbar">
+            <a href="/index">Kezdőlap</a>
+            <a href="/jarat_kereso">Járat Kereső</a>
+            <a href="/akciok">Akciók</a>
+            <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+            <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+            <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+            <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+            <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+            <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+            <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+            <div sec:authorize="!hasAuthority('ROLE_ADMIN')" class="animation start-gepekKezelese"></div>
+            <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="animation start-rendelesek"></div>
+            <span></span>
+
+        </div>
+    </nav>
+</header>
+<main class="main" style="margin-bottom: 50px;" >
+    <aside th:object="${user}" style="margin-top: 50px;" class="search-area">
+        <h1>Felhasználói adatok</h1>
+        <p th:if="${user != null}"><strong>Felhasználónév:</strong><span th:text="${user.getUsername()}"></span></p>
+        <p th:if="${user != null}"><strong>Vezetéknév:</strong><span th:text="${user.getVezetekNev()}"></span></p>
+        <p th:if="${user != null}"><strong>Keresztnév:</strong><span th:text="${user.getKeresztNev()}"></span></p>
+        <p th:if="${user != null}"><strong>Email:</strong><span th:text="${user.getEmail()}"></span></p>
+        <p th:if="${user != null}"><strong>Telefonszám:</strong><span th:text="${user.getTelefonSzam()}"></span></p>
+        <p th:if="${user != null}"><strong>Bankkártyaszám:</strong><span th:text="${user.getBankkartyaszam()}"></span></p>
+    </aside>
+    <section class="my-account-section-modify">
+
+        <h2 style="margin-top: 100px;">Fiókom szerkesztés:</h2>
+        <form th:action="@{/updateUser}" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label for="vezetekNev" class="control-label">Vezetéknév:</label>
+                <input type="text" class="form-control" name="vezetekNev" id="vezetekNev" >
+            </div>
+            <div class="form-group">
+                <label for="keresztNev" class="control-label">Keresztnév:</label>
+                <input type="text" class="form-control" name="keresztNev" id="keresztNev" >
+            </div>
+            <div class="form-group">
+                <label for="email" class="control-label">Email:</label>
+                <input type="email" class="form-control" name="email" id="email" >
+            </div>
+            <div class="form-group">
+                <label for="telefonSzam" class="control-label">Telefonszám:</label>
+                <input type="tel" class="form-control" name="telefonSzam" id="telefonSzam" >
+            </div>
+            <div class="form-group">
+                <label for="bankkartyaSzam" class="control-label">Bankkártyaszám:</label>
+                <input type="number" class="form-control" name="bankkartyaSzam" id="bankkartyaSzam" >
+            </div>
+            <input class="a_link" type="submit" value="Módosítás" >
+        </form>
+    </section>
+
+        <!--  <a class="btn btn-danger"  href="#" th:action="@{/deleteUser/{felhasznalonev} (felhasznalonev=${felhasznalonev})}">Fiókom Végleges Törlése</a>-->
+
+</main>
+
+</body>
+</html>

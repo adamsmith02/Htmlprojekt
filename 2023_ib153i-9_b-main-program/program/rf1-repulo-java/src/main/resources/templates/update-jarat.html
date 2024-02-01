@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Repülőtársaság</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel='stylesheet' href='/style.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--    <link rel='stylesheet' href='/static/style.css' content="text/css">-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+
+
+</head>
+
+<body sec:authorize="hasAuthority('ROLE_ADMIN')" style="background: #34495e; color:white;margin-top: 150px;">
+
+<header>
+    <nav>
+        <div class="navbar">
+            <a href="/index">Kezdőlap</a>
+            <a href="/jarat_kereso">Járat Kereső</a>
+            <a href="/akciok">Akciók</a>
+            <a sec:authorize="isAuthenticated()" href="/arany_kartya">Aranykártya</a>
+            <a href="/rolunk"  sec:authorize="!hasAuthority('ROLE_ADMIN')">Rólunk</a>
+            <a sec:authorize="isAuthenticated()" href="/rendeles">Rendelések</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/jaratok_kezelese">Járatok Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/gepek_kezelese">Gépek Kezelése</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')"  href="/repterek_kezelese">Repterek Kezelése</a>
+            <a sec:authorize="!isAuthenticated()" href="/register">Regisztráció</a>
+            <a sec:authorize="!isAuthenticated()" href="/login">Belépés</a>
+            <a sec:authorize="isAuthenticated()"  href="/fiokom">Fiókom</a>
+            <a sec:authorize="isAuthenticated()"  href="/logout">Kilépés</a>
+
+            <!--            <a href="#">Kezdőlap</a>-->
+            <!--            <a href="#">Járat kereső</a>-->
+            <!--            <a href="#">Akciók</a>-->
+            <!--            <a href="#">Aranykártya</a>-->
+            <!--            <a href="#">Rólunk</a>-->
+            <!--            <a href="#">Járatok kezelése</a>-->
+            <!--            <a href="#">Gépek kezelése</a>-->
+            <!--            <a href="#">Repterek kezelése</a>-->
+            <!--            <a href="#">Rendelések</a>-->
+            <!--            <a href="#">Kilépés</a>-->
+            <div class="animation start-jaratokKezelese"></div>
+            <span></span>
+
+        </div>
+    </nav>
+</header>
+
+<div>
+    <h2>Járatok szerkesztése</h2>
+    <table id="jarat_update_table">
+        <tr>
+            <th>Id</th>
+            <th>Akció</th>
+            <th>Út</th>
+            <th>Repülő</th>
+        </tr>
+        <tr>
+            <td th:text="${jarat.getId()}"></td>
+            <td th:text="${jarat.getAkcio()}"></td>
+            <td th:text="${jarat.getUt_id()}"></td>
+            <td th:text="${jarat.getRepulo_lajstromjel()}"></td>
+        </tr>
+    </table>
+    <form action="#" th:action="@{/updateJarat/{id}(id=${jarat.getId()})}" method="post">
+        <label> Akció:
+            <input class="form-control" id="akcio" name="akcio" th:value="${jarat.getAkcio()}" required type="number">
+        </label>
+        <label>Út:
+            <select class="form-control" id="utId" name="utId">
+                <option value="">Válassz utat</option>
+                <option th:each="ut : ${utak}"
+                        th:text="${ut.getRepterVaros()} + ': ' + ${ut.getId()}"
+                        th:value="${ut.getId()}">
+                </option>
+            </select>
+        </label>
+        <label>Repülő:
+            <select class="form-control" id="repLajstrom" name="repLajstrom">
+                <option value="">Válassz repülőt...</option>
+                <option  th:each="repulo : ${repulok}" th:text="${repulo.getLajstromjel()}" th:value="${repulo.getLajstromjel()}"></option>
+            </select>
+        </label>
+        <label>
+            <input type="submit" value="Módosít" class="btn btn-warning">
+        </label>
+    </form>
+</div>
+</body>
+</html>
